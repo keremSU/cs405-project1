@@ -1,0 +1,27 @@
+body {
+  margin: 16px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: black;
+  background: white;
+}
+
+h1 { font-size: 22px; }
+h2 { font-size: 17px; margin: 12px 0; }
+.layout { display: flex; align-items: flex-start; gap: 24px; }
+.views { width: 65%; }
+.controls { width: 340px; }
+canvas { display: block; border: 1px solid black; width: 100%; }
+#main-view { height: 570px; touch-action: none; }
+#inspection-view { width: 360px; max-width: 100%; height: 230px; }
+label { display: block; margin: 8px 0; }
+input[type="range"] { vertical-align: middle; width: 150px; }
+output { margin-left: 6px; }
+pre { font-size: 12px; line-height: 1.4; }
+#error { color: darkred; white-space: pre-wrap; }
+
+@media (max-width: 800px) {
+  .layout { display: block; }
+  .views, .controls { width: 100%; }
+  #main-view { height: 450px; }
+}

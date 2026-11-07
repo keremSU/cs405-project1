@@ -1,0 +1,6 @@
+export default {
+  base: './',
+  assetsInclude: ['**/*.wgsl'],
+  server: { host: '127.0.0.1' },
+  preview: { host: '127.0.0.1' }
+};

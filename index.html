@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CS405 Project 1 - Parts A, B, C, D</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="src/ui/style.css">
+</head>
+<body>
+  <h1>CS405 Project 1 - Parts A, B, C, D</h1>
+  <p>Drag to orbit. Use the mouse wheel to zoom. Shift + drag edits curve points.</p>
+  <p id="error" hidden></p>
+  <div class="layout">
+    <div class="views">
+      <h2>Main camera</h2>
+      <canvas id="main-view" aria-label="Main camera"></canvas>
+      <h2>Inspection camera</h2>
+      <canvas id="inspection-view" aria-label="Inspection camera"></canvas>
+      <p>Light blue lines show the main camera's frustum.</p>
+      <p>Painting: Feyhaman Duran, Kabataş Rıhtımı (1936).</p>
+    </div>
+    <div class="controls">
+      <h2>A - Transformations</h2>
+      <p>Controls change the orange cube.</p>
+      <label>Translation X <input id="tx" type="range" min="-2" max="2" step="0.1" value="1"><output id="tx-value"></output></label>
+      <label>Translation Y <input id="ty" type="range" min="-2" max="2" step="0.1" value="0"><output id="ty-value"></output></label>
+      <label>Translation Z <input id="tz" type="range" min="0.3" max="2" step="0.1" value="0.8"><output id="tz-value"></output></label>
+      <label>Rotation Z <input id="angle" type="range" min="-180" max="180" step="1" value="30"><output id="angle-value"></output></label>
+      <label>Scale <input id="scale" type="range" min="0.2" max="1" step="0.05" value="0.6"><output id="scale-value"></output></label>
+      <label>Order <select id="order"><option value="TRS">T * R * S</option><option value="SRT">S * R * T</option></select></label>
+      <p>T * R * S</p><pre id="trs"></pre>
+      <p>S * R * T</p><pre id="srt"></pre>
+      <h2>B - Scene graph</h2>
+      <pre>gallery
+  animated-pivot
+    lavender-cube
+  amber-cube
+  teal-cube</pre>
+      <label><input id="animate" type="checkbox" checked> Animate pivot</label>
+      <label><input id="axes" type="checkbox"> Show local axes</label>
+      <button id="zero-pivot">Stop pivot at 0 degrees</button>
+      <p>Pivot angle: <span id="pivot-angle">0</span> degrees</p>
+      <p>Lavender cube world matrix:</p><pre id="leaf-world"></pre>
+      <h2>C - Camera</h2>
+      <label>Projection <select id="projection"><option value="perspective">Perspective</option><option value="orthographic">Orthographic</option></select></label>
+      <label>FOV <input id="fov" type="range" min="30" max="65" value="45"></label>
+      <pre id="camera-info"></pre>
+      <h2>D - Curves</h2>
+      <p>The initial curve traces the lower edge of the front boat.</p>
+      <label>Curve <select id="curve-type"><option value="bezier">Piecewise Bezier</option><option value="catmull-rom">Catmull-Rom</option></select></label>
+      <label>Mouse <select id="mouse-mode"><option value="orbit">Orbit camera</option><option value="edit">Edit points</option><option value="place">Place 4 anchors</option></select></label>
+      <p>Gold: anchors. White: handles. Red: selected point.</p>
+      <label><input id="curve-controls" type="checkbox" checked> Show control points</label>
+      <fieldset id="casteljau-settings">
+        <legend>de Casteljau (Bezier)</legend>
+        <label>Segment <select id="curve-segment"><option value="0">1</option><option value="1">2</option><option value="2">3</option></select></label>
+        <label>t <input id="curve-t" type="range" min="0" max="1" step="0.01" value="0.5"><output id="curve-t-value">0.50</output></label>
+        <label><input id="casteljau" type="checkbox" checked> Show construction</label>
+      </fieldset>
+      <label><input id="curve-follower" type="checkbox" checked> Animate follower</label>
+      <label>Speed <input id="curve-speed" type="range" min="0" max="0.2" step="0.01" value="0.06"></label>
+      <p id="curve-continuity"></p>
+      <p id="curve-message" role="status">Shift + drag a point, or choose Edit points.</p>
+      <button id="curve-reset">Restore boat curve</button>
+      <button id="curve-export">Export JSON</button>
+    </div>
+  </div>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

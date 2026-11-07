@@ -1,0 +1,43 @@
+{
+  "type": "catmull-rom",
+  "painting": "painting.jpg",
+  "coordinates": {
+    "u": "0 left, 1 right",
+    "v": "0 top, 1 bottom"
+  },
+  "controlPoints": [
+    {
+      "u": 0.3,
+      "v": 0.59
+    },
+    {
+      "u": 0.48,
+      "v": 0.65
+    },
+    {
+      "u": 0.7,
+      "v": 0.62
+    },
+    {
+      "u": 0.91,
+      "v": 0.54
+    }
+  ],
+  "segments": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3
+    ]
+  ],
+  "continuity": "C1",
+  "endpointRule": "duplicate first and last points",
+  "parameterization": "equal segment intervals"
+}
