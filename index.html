@@ -3,20 +3,29 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CS405 Project 1 - Parts A, B, C, D</title>
+  <title>CS405 Project 1</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="src/ui/style.css">
 </head>
 <body>
-  <h1>CS405 Project 1 - Parts A, B, C, D</h1>
+  <h1>CS405 Project 1</h1>
   <p>Drag to orbit. Use the mouse wheel to zoom. Shift + drag edits curve points.</p>
+  <label>Large view <select id="view-select"><option value="main">Main camera</option><option value="inspection">Inspection camera</option></select></label>
+  <button id="reset-scene">Reset scene</button>
+  <label><input id="debug" type="checkbox" checked> Show debug drawings</label>
+  <p id="frame-info" role="status" aria-label="Performance">Frame time: measuring...</p>
+  <p id="gpu-info">GPU: loading...</p>
   <p id="error" hidden></p>
   <div class="layout">
     <div class="views">
+      <section id="main-camera" class="large-view">
       <h2>Main camera</h2>
       <canvas id="main-view" aria-label="Main camera"></canvas>
+      </section>
+      <section id="inspection-camera" class="small-view">
       <h2>Inspection camera</h2>
       <canvas id="inspection-view" aria-label="Inspection camera"></canvas>
+      </section>
       <p>Light blue lines show the main camera's frustum.</p>
       <p>Painting: Feyhaman Duran, Kabataş Rıhtımı (1936).</p>
     </div>

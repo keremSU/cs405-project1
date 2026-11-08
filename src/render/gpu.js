@@ -10,7 +10,8 @@ export async function createGPU(canvases) {
     context.configure({ device, format, alphaMode: 'opaque' });
     views.push({ canvas, context, depth: null });
   }
-  return { device, format, views };
+  const gpuName = adapter.info?.description || adapter.info?.vendor || 'not reported by browser';
+  return { device, format, views, gpuName };
 }
 
 export function resizeView(device, view) {

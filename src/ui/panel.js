@@ -40,6 +40,7 @@ export function setupPanel(scene, camera) {
     get(id).oninput = update;
   }
   update();
+  return update;
 }
 
 export function updateReadouts(scene, camera, angle) {

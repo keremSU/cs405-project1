@@ -1,5 +1,5 @@
 import { Node } from './node.js';
-import { multiply, translate, scale, rotateZ } from '../math/mat4.js';
+import { identity, multiply, translate, scale, rotateZ } from '../math/mat4.js';
 
 export function createScene() {
   const gallery = new Node('gallery');
@@ -7,9 +7,6 @@ export function createScene() {
   const lavender = pivot.add(new Node('lavender-cube'));
   const amber = gallery.add(new Node('amber-cube'));
   const teal = gallery.add(new Node('teal-cube'));
-
-  lavender.local = multiply(translate(0.8, 0, 0), scale(0.5, 0.5, 0.5));
-  teal.local = multiply(translate(-1, -1.2, 0.7), scale(0.55, 0.55, 0.55));
 
   const cubes = [
     { node: lavender, color: [0.7, 0.5, 0.9, 1] },
@@ -22,6 +19,15 @@ export function createScene() {
     gallery.update();
   }
 
+  function reset() {
+    gallery.local = identity();
+    lavender.local = multiply(translate(0.8, 0, 0), scale(0.5, 0.5, 0.5));
+    amber.local = multiply(translate(1, 0, 0.8), multiply(rotateZ(Math.PI/6), scale(0.6, 0.6, 0.6)));
+    teal.local = multiply(translate(-1, -1.2, 0.7), scale(0.55, 0.55, 0.55));
+    update(0);
+  }
+
+  reset();
   return { gallery, pivot, lavender, amber, teal, cubes,
-    nodes: [gallery, pivot, lavender, amber, teal], update };
+    nodes: [gallery, pivot, lavender, amber, teal], update, reset };
 }

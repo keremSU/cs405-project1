@@ -22,6 +22,10 @@ export function setupMouse(canvas, camera, curve) {
     const hit = paintingHit(camera,x,y,width,height,curveZ);
     const mode = get('mouse-mode').value;
     if (mode === 'place') {
+      if (!get('debug').checked || !get('curve-controls').checked) {
+        message('Enable debug drawings and control points before placing anchors.');
+        return;
+      }
       if (!hit || !inside(hit)) { message('Click inside the painting.'); return; }
       curve.pending.push(hit);
       message('Anchors placed: ' + curve.pending.length + '/4');
@@ -35,7 +39,7 @@ export function setupMouse(canvas, camera, curve) {
     pointIndex = -1;
     if (event.shiftKey || mode === 'edit') {
       let best = 14;
-      if (get('curve-controls').checked) curve.points.forEach((p,i) => {
+      if (get('debug').checked && get('curve-controls').checked) curve.points.forEach((p,i) => {
         const screen = screenPoint(camera,p,width,height);
         if (!screen) return;
         const distance = Math.hypot(screen[0]-x,screen[1]-y);
@@ -57,6 +61,7 @@ export function setupMouse(canvas, camera, curve) {
     if (!dragging) return;
     const [x,y,width,height] = mousePosition(event);
     if (pointIndex >= 0) {
+      if (!get('debug').checked || !get('curve-controls').checked) { stop(); return; }
       const hit = paintingHit(camera,x,y,width,height,curveZ);
       if (hit) curve.move(pointIndex,[hit[0]+offset[0],hit[1]+offset[1],curveZ]);
     } else {
@@ -78,4 +83,5 @@ export function setupMouse(canvas, camera, curve) {
     camera.distance = Math.max(4,Math.min(13,camera.distance*factor));
     camera.orthoHeight = Math.max(4,Math.min(13,camera.orthoHeight*factor));
   }, { passive: false });
+  return stop;
 }

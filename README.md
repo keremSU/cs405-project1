@@ -16,6 +16,10 @@ Open the local URL printed by Vite, usually [localhost:5173](http://localhost:51
 
 ## Controls
 
+- Large view: make the main or inspection camera the larger view. The main camera stays interactive in either layout.
+- Reset scene: restore the camera, cube transforms, curve points, animation and control values.
+- Show debug drawings: toggle local axes, control points, de Casteljau lines and the frustum together. The individual checkboxes still control each drawing. Enable debug and control points before editing or placing anchors.
+
 - Drag to orbit; scroll to zoom.
 - Translation, Rotation Z, Scale: change the orange cube.
 - Order: select TRS or SRT. Both matrices are shown.
@@ -54,4 +58,10 @@ npm run build
 
 The TRS/SRT screenshots in `docs/` use the same scene with the pivot stopped at zero and the follower hidden. Separate frustum images are saved as `frustum-perspective.jpg` and `frustum-orthographic.jpg`.
 
-Current scope: A-D. Part E and the PDF report are still pending.
+## Performance
+
+Frame time is the mean of the last 120 animation-frame intervals, updated twice per second. It includes browser scheduling and display refresh; it is not a GPU execution timer. Returning from a hidden tab starts a fresh measurement.
+
+Vertices/frame adds the counts passed to every `draw()` call in both views. It counts submitted vertices, including repeated vertices, rather than unique mesh points. FPS is 1000 divided by the mean frame time. JS CPU time is measured with `performance.now()` around the frame update, geometry generation, command submission and scene readouts. It does not wait for GPU completion. The displayed CPU value is the average of the last 120 frames.
+
+Draw calls and the GPU name are also shown. Some browsers do not report a full GPU name.

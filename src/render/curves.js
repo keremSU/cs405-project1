@@ -24,8 +24,8 @@ export function curveGeometry(curve, options) {
       if (i === curve.selected) color = [1,0.2,0.2];
       pointMarker(triangles,p,color);
     });
+    for (const p of curve.pending) pointMarker(triangles,p,[1,0.3,0.3]);
   }
-  for (const p of curve.pending) pointMarker(triangles,p,[1,0.3,0.3]);
 
   if (options.casteljau && curve.type === 'bezier') {
     const points = curve.bezierPoints.slice(options.segment*3,options.segment*3+4);

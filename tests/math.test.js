@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import * as m from '../src/math/mat4.js';
 import { cross, normalize } from '../src/math/vec3.js';
 import { createScene } from '../src/scene/scene.js';
-import { Camera } from '../src/scene/camera.js';
+import { Camera, inspectionView } from '../src/scene/camera.js';
 
 function close(a, b) {
   assert.equal(a.length, b.length);
@@ -76,6 +76,42 @@ test('frustum corners match the projection in both modes', () => {
     for (let i = 0; i < 8; i++) {
       const xy = [[-1,-1],[1,-1],[1,1],[-1,1]][i%4];
       close(m.transformPoint(vp,corners[i]), [xy[0],xy[1],i<4?0:1]);
+    }
+  }
+});
+
+test('camera reset restores orbit and projection settings', () => {
+  const camera = new Camera();
+  camera.yaw = 1; camera.pitch = -.5; camera.distance = 12;
+  camera.target = [2,1,3]; camera.fov = 65; camera.near = 2;
+  camera.far = 30; camera.orthoHeight = 12; camera.projection = 'orthographic';
+  camera.reset();
+  close(camera.target,[0,0,0]);
+  assert.equal(camera.yaw,.15);
+  assert.equal(camera.pitch,.12);
+  assert.equal(camera.distance,9);
+  assert.equal(camera.fov,45);
+  assert.equal(camera.near,.5);
+  assert.equal(camera.far,16);
+  assert.equal(camera.orthoHeight,7.5);
+  assert.equal(camera.projection,'perspective');
+});
+
+
+test('inspection view keeps the whole frustum visible in a portrait layout', () => {
+  const camera = new Camera();
+  camera.fov = 65;
+  for (const mode of ['perspective','orthographic']) {
+    camera.projection = mode;
+    for (const yaw of [.15,1.5,3]) {
+      camera.yaw = yaw;
+      const corners = camera.getFrustum(360/230);
+      const vp = inspectionView(401/450,corners);
+      for (const corner of corners) {
+        const p = m.transformPoint(vp,corner);
+        assert.ok(Math.abs(p[0]) <= 1 && Math.abs(p[1]) <= 1);
+        assert.ok(p[2] >= 0 && p[2] <= 1);
+      }
     }
   }
 });

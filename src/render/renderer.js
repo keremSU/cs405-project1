@@ -6,6 +6,7 @@ export class Renderer {
   async initialize(canvases) {
     const gpu = await createGPU(canvases);
     this.device = gpu.device;
+    this.gpuName = gpu.gpuName;
     this.views = gpu.views;
     const device = this.device;
 
@@ -90,6 +91,7 @@ export class Renderer {
 
   render(matrices, cubes, axes, frustum, curveTriangles) {
     const encoder = this.device.createCommandEncoder();
+    let vertices = 0, drawCalls = 0;
     for (let i = 0; i < 2; i++) {
       const view = this.views[i];
       resizeView(this.device, view);
@@ -125,31 +127,37 @@ export class Renderer {
           depthLoadOp: 'clear', depthStoreOp: 'store'
         }
       });
+      const draw = count => {
+        pass.draw(count);
+        vertices += count;
+        drawCalls++;
+      };
       pass.setPipeline(this.paintingPipeline);
       pass.setBindGroup(0, view.uniforms[0].group);
       pass.setBindGroup(1, this.textureGroup);
       pass.setVertexBuffer(0, this.paintingBuffer);
-      pass.draw(6);
+      draw(6);
 
       pass.setPipeline(this.cubePipeline);
       pass.setVertexBuffer(0, this.cubeBuffer);
       for (let j = 0; j < cubes.length; j++) {
         pass.setBindGroup(0, view.uniforms[j+1].group);
-        pass.draw(36);
+        draw(36);
       }
       if (triangles.length > 0) {
         pass.setBindGroup(0, view.uniforms[4].group);
         pass.setVertexBuffer(0, view.triangleBuffer);
-        pass.draw(triangles.length/6);
+        draw(triangles.length/6);
       }
       if (lines.length > 0) {
         pass.setPipeline(this.linePipeline);
         pass.setBindGroup(0, view.uniforms[4].group);
         pass.setVertexBuffer(0, view.lineBuffer);
-        pass.draw(lines.length/6);
+        draw(lines.length/6);
       }
       pass.end();
     }
     this.device.queue.submit([encoder.finish()]);
+    return { vertices, drawCalls };
   }
 }

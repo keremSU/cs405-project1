@@ -2,6 +2,10 @@ import { lookAt, perspective, orthographic, multiply, rigidInverse, transformPoi
 
 export class Camera {
   constructor() {
+    this.reset();
+  }
+
+  reset() {
     this.yaw = 0.15;
     this.pitch = 0.12;
     this.distance = 9;
@@ -50,9 +54,15 @@ export class Camera {
   }
 }
 
-export function inspectionView(aspect) {
+export function inspectionView(aspect, corners = []) {
   const view = lookAt([22, 16, 24], [0, 0, 0], [0, 1, 0]);
-  const projection = orthographic(-12*aspect, 12*aspect, -12, 12, 0.1, 70);
+  // Keep the camera fixed; expand the view volume to fit the frustum.
+  let h = 12;
+  for (const corner of corners) {
+    const p = transformPoint(view,corner);
+    h = Math.max(h,Math.abs(p[1])*1.1,Math.abs(p[0])*1.1/aspect);
+  }
+  const projection = orthographic(-h*aspect, h*aspect, -h, h, 0.1, 70);
   return multiply(projection, view);
 }
 

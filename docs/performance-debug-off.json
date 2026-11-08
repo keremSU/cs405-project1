@@ -1,0 +1,15 @@
+{
+  "browser": "Google Chrome",
+  "browserVersion": "156.0.8078.80",
+  "platform": "macOS",
+  "gpu": "Apple Silicon GPU",
+  "method": "Representative rolling readouts transcribed from the refreshed Chrome screenshots; latest 120 frame intervals and CPU samples; both views rendered; default perspective camera; animations on; Chrome page zoom 50%.",
+  "configuration": "debug off",
+  "reading": {
+    "frameMs": 8.33,
+    "fps": 120.0,
+    "cpuMs": 1.08,
+    "drawCalls": 12,
+    "vertices": 1008
+  }
+}
